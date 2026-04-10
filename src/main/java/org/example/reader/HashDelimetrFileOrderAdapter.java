@@ -16,13 +16,13 @@ public class HashDelimetrFileOrderAdapter implements OrderReader {
     public List<Order> readOrders(Path filePath) throws IOException {
         try (Stream<String> stream = Files.lines(filePath)) {
             return stream
-                    .filter(line -> line != null && !line.isEmpty())
+                    .filter(line -> line != null && !line.isBlank())
                     .map(this::parseLine).toList();
         }catch (IOException e){
             throw new RuntimeException("Error reading orders from file " + filePath, e);
         }
     }
-    private Object parseLine(String line) {
+    private Order parseLine(String line) {
         String[] parts = line.split(DELIMITER);
         if(parts.length != 3) {
             throw new IllegalArgumentException("Invalid line format: " + line);
