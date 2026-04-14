@@ -27,7 +27,7 @@ public class HashDelimetrFileOrderAdapter implements OrderReader {
         if(parts.length != 3) {
             throw new IllegalArgumentException("Invalid line format: " + line);
         }
-        LocalDateTime dateTime = LocalDateTime.parse(parts[0], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime dateTime = LocalDateTime.parse(parts[0], DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
         String companyName = parts[1];
         int quantity = Integer.parseInt(parts[2]);
         return new Order(dateTime, companyName, quantity);
