@@ -1,6 +1,7 @@
 package org.example.reader;
 
 import org.example.order.Order;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,13 +19,14 @@ public class TextFileOrderAdapter implements OrderReader {
             return stream
                     .filter(line -> line != null && !line.isBlank())
                     .map(this::parseLine).toList();
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException("Error reading orders from file " + filePath, e);
         }
     }
+
     private Order parseLine(String line) {
         String[] parts = line.split(DELIMITER);
-        if(parts.length != 3) {
+        if (parts.length != 3) {
             throw new IllegalArgumentException("Invalid order line: " + line);
         }
         LocalDateTime dateTime = LocalDateTime.parse(parts[0], DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));

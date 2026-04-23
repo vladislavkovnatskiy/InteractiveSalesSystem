@@ -7,9 +7,9 @@ public class OrderReaderFactory {
     public static OrderReader getOrderReader(Path filePath) throws IOException {
         String fileName = filePath.getFileName().toString().toLowerCase();
 
-        if(fileName.endsWith(".txt")) {
+        if (fileName.endsWith(".txt")) {
             return new TextFileOrderAdapter();
-        }else{
+        } else {
             return new HashDelimetrFileOrderAdapter();
         }
     }

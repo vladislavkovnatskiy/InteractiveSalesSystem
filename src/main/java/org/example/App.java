@@ -1,13 +1,13 @@
 package org.example;
 
-import org.example.discount.DiscountCalculatorFactory;
 import org.example.discount.DiscountStrategy;
+import org.example.discount.SuperDiscount;
 import org.example.order.Order;
 import org.example.reader.OrderReader;
 import org.example.reader.OrderReaderFactory;
+import org.example.writer.FileWriter;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -30,18 +30,12 @@ public class App {
         List<Order> orders = reader.readOrders(inputPath);
 
         //super промо, регулярное или без промо
-        DiscountStrategy discountStrategy = DiscountCalculatorFactory.getDiscountStrategy(args[1]);
+        DiscountStrategy discountStrategy = new SuperDiscount();
 
-        Map<String,Integer> result = discountStrategy.calculateTotalCosts(orders, PRICE_PER_KG);
+        Map<String, Integer> result = discountStrategy.calculateTotalCosts(orders, PRICE_PER_KG);
 
-        writeResult(result,outputPath);
-        System.out.println("The result is saved in " +  outputPath.toAbsolutePath());
-    }
-
-    private static void writeResult(Map<String, Integer> result, Path outputPath){
-        List<String> lines = result.entrySet().stream().map(entry -> entry.getKey() + " - " + entry.getValue()).toList();
-        try {
-            Files.write(outputPath,lines);
-        } catch (IOException e) {throw new RuntimeException("Error writing to a file: " + outputPath, e);}
+        FileWriter writer = new FileWriter();
+        writer.writeResult(result, outputPath);
+        System.out.println("The result is saved in " + outputPath.toAbsolutePath());
     }
 }
