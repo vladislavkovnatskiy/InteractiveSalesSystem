@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SuperDiscount implements DiscountStrategy {
+    private static final int MIN_DISCOUNT = 0;
+    private static final double MAX_DISCOUNT = 0.5;
+    private static final double STEP_DISCOUNT = 0.05;
+
     @Override
     public Map<String, Integer> calculateTotalCosts(List<Order> orders, int pricePerKG) {
         List<Order> sortedOrders = orders.stream()
@@ -27,10 +31,10 @@ public class SuperDiscount implements DiscountStrategy {
 
     private int calculatorDiscount(int amount, int i) {
 
-        if (i * 0.05 <= 0.45) {
-            return (int) (amount * (0.5 - i * 0.05));
+        if (i * STEP_DISCOUNT <= (MAX_DISCOUNT - STEP_DISCOUNT)) {
+            return (int) (amount * (MAX_DISCOUNT - i * STEP_DISCOUNT));
         } else {
-            return 0;
+            return MIN_DISCOUNT;
         }
     }
 }

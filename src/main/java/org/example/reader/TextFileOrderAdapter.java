@@ -1,5 +1,6 @@
 package org.example.reader;
 
+import org.example.castomexception.IORuntimeException;
 import org.example.order.Order;
 
 import java.io.IOException;
@@ -12,6 +13,9 @@ import java.util.stream.Stream;
 
 public class TextFileOrderAdapter implements OrderReader {
     private static final String DELIMITER = "\\|";
+    private static final Integer ORDER_DATE_INDEX = 0;
+    private static final Integer COMPANY_NAME_INDEX = 1;
+    private static final Integer QUANTITY_INDEX = 2;
 
     @Override
     public List<Order> readOrders(Path filePath) throws IOException {
@@ -19,8 +23,8 @@ public class TextFileOrderAdapter implements OrderReader {
             return stream
                     .filter(line -> line != null && !line.isBlank())
                     .map(this::parseLine).toList();
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading orders from file " + filePath, e);
+        } catch (IORuntimeException e) {
+            throw new IORuntimeException("Error reading orders from file " + filePath);
         }
     }
 
@@ -29,9 +33,9 @@ public class TextFileOrderAdapter implements OrderReader {
         if (parts.length != 3) {
             throw new IllegalArgumentException("Invalid order line: " + line);
         }
-        LocalDateTime dateTime = LocalDateTime.parse(parts[0], DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
-        String companyName = parts[1];
-        int quantity = Integer.parseInt(parts[2]);
+        LocalDateTime dateTime = LocalDateTime.parse(parts[ORDER_DATE_INDEX], DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+        String companyName = parts[COMPANY_NAME_INDEX];
+        int quantity = Integer.parseInt(parts[QUANTITY_INDEX]);
         return new Order(dateTime, companyName, quantity);
     }
 }
