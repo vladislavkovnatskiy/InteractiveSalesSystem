@@ -3,7 +3,7 @@ package org.example;
 import org.example.discount.DiscountStrategy;
 import org.example.discount.SuperDiscount;
 import org.example.order.Order;
-import org.example.reader.OrderReader;
+import org.example.reader.OrderAdapter;
 import org.example.reader.OrderReaderFactory;
 import org.example.writer.FileWriter;
 
@@ -27,7 +27,7 @@ public class AppRunner {
         Path outputPath = Paths.get("src/main/result/result.txt");
 
         //выбрали тип аддаптера для чтения через фабрику и получили список заказов
-        OrderReader reader = OrderReaderFactory.getOrderReader(inputPath);
+        OrderAdapter reader = OrderReaderFactory.getOrderReader(inputPath);
         List<Order> orders = reader.readOrders(inputPath);
 
         DiscountStrategy discountStrategy = new SuperDiscount();
