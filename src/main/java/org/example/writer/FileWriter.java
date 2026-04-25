@@ -1,5 +1,7 @@
 package org.example.writer;
 
+import org.example.castomexception.IORuntimeException;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,11 +10,14 @@ import java.util.Map;
 
 public class FileWriter {
     public void writeResult(Map<String, Integer> result, Path outputPath) {
-        List<String> lines = result.entrySet().stream().map(entry -> entry.getKey() + " - " + entry.getValue()).toList();
+        List<String> lines = result.entrySet()
+                .stream()
+                .map(entry -> entry.getKey() + " - " + entry.getValue())
+                .toList();
         try {
             Files.write(outputPath, lines);
         } catch (IOException e) {
-            throw new RuntimeException("Error writing to a file: " + outputPath, e);
+            throw new IORuntimeException("Error writing to a file: " + outputPath);
         }
     }
 }

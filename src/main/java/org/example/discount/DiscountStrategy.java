@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface DiscountStrategy{
-    Map<String, Integer> calculateTotalCosts(List<Order> orders, int pricePerKG);
+    Map<String, Integer> calculateTotalCosts(List<Order> orders, int pricePerKG, int minDiscount, double maxDiscount, double stepDiscount);
 }

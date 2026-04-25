@@ -1,20 +1,12 @@
 package org.example;
 
-import org.example.discount.DiscountStrategy;
-import org.example.discount.SuperDiscount;
-import org.example.order.Order;
-import org.example.reader.OrderAdapter;
-import org.example.reader.OrderReaderFactory;
-import org.example.writer.FileWriter;
+import org.example.order.OrderProcessor;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
 
 public class AppRunner {
-    private static final int PRICE_PER_KG = 10;
 
     public static void run(String[] args) throws IOException {
         if (args.length < 1) {
@@ -26,19 +18,6 @@ public class AppRunner {
         Path inputPath = Paths.get(args[0]);
         Path outputPath = Paths.get("src/main/result/result.txt");
 
-        //выбрали тип аддаптера для чтения через фабрику и получили список заказов
-        OrderAdapter reader = OrderReaderFactory.getOrderReader(inputPath);
-        List<Order> orders = reader.readOrders(inputPath);
-
-        DiscountStrategy discountStrategy = new SuperDiscount();
-
-        // Расчёт итоговой стоимости
-        Map<String, Integer> result = discountStrategy.calculateTotalCosts(orders, PRICE_PER_KG);
-
-        //Запись результата
-        FileWriter writer = new FileWriter();
-        writer.writeResult(result, outputPath);
-        System.out.println("The result is saved in " + outputPath.toAbsolutePath());
+        OrderProcessor.processor(args, inputPath, outputPath);
     }
-
 }

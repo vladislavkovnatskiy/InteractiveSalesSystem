@@ -24,7 +24,8 @@ public abstract class FileOrderAdapter implements OrderAdapter {
         try (Stream<String> stream = Files.lines(filePath)) {
             return stream
                     .filter(line -> line != null && !line.isBlank())
-                    .map(this::parseLine).toList();
+                    .map(this::parseLine)
+                    .toList();
         } catch (IORuntimeException e) {
             throw new IORuntimeException("Error reading orders from file " + filePath);
         }
