@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SuperDiscount implements DiscountStrategy {
+public class DiscountFromMaxToMinWithStep implements DiscountStrategy {
 
     @Override
     public Map<String, Integer> calculateTotalCosts(List<Order> orders, int pricePerKG, int minDiscount, double maxDiscount, double stepDiscount) {
