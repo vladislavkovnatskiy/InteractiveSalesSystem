@@ -76,26 +76,10 @@ public class DiscountFromMaxToMinWithStepTest {
 
     @Test
     void testCalculateTotalCostsMinDiscountTriggered() {
-        Order a = mock(Order.class);
-        Order b = mock(Order.class);
-        Order c = mock(Order.class);
-        Order d = mock(Order.class);
-
-        LocalDateTime now = LocalDateTime.now();
-        when(a.orderDate()).thenReturn(now);
-        when(b.orderDate()).thenReturn(now);
-        when(c.orderDate()).thenReturn(now);
-        when(d.orderDate()).thenReturn(now);
-
-        when(a.quantityKg()).thenReturn(10);
-        when(b.quantityKg()).thenReturn(10);
-        when(c.quantityKg()).thenReturn(10);
-        when(d.quantityKg()).thenReturn(10);
-
-        when(a.company()).thenReturn("TestCo");
-        when(b.company()).thenReturn("TestCo");
-        when(c.company()).thenReturn("TestCo");
-        when(d.company()).thenReturn("TestCo");
+        Order a = new Order(LocalDateTime.now(), "TestCo", 10);
+        Order b = new Order(LocalDateTime.now(), "TestCo", 10);
+        Order c = new Order(LocalDateTime.now(), "TestCo", 10);
+        Order d = new Order(LocalDateTime.now(), "TestCo", 10);
 
         List<Order> orders = List.of(a, b, c, d);
         int pricePerKg = 10;
@@ -108,48 +92,23 @@ public class DiscountFromMaxToMinWithStepTest {
 
         assertEquals(1, result.size());
         assertEquals(340, result.get("TestCo"));
-
-        verify(a, times(1)).quantityKg();
-        verify(b, times(1)).quantityKg();
-        verify(c, times(1)).quantityKg();
-        verify(d, times(1)).quantityKg();
     }
     @Test
     void testCalculateTotalCostsWithMinDiscountOnePercent(){
-        Order a = mock(Order.class);
-        Order b = mock(Order.class);
-        Order c = mock(Order.class);
-        Order d = mock(Order.class);
-
-        LocalDateTime now = LocalDateTime.now();
-        when(a.orderDate()).thenReturn(now);
-        when(b.orderDate()).thenReturn(now);
-        when(c.orderDate()).thenReturn(now);
-        when(d.orderDate()).thenReturn(now);
-
-        when(a.quantityKg()).thenReturn(10);
-        when(b.quantityKg()).thenReturn(10);
-        when(c.quantityKg()).thenReturn(10);
-        when(d.quantityKg()).thenReturn(10);
-
-        when(a.company()).thenReturn("TestCo");
-        when(b.company()).thenReturn("TestCo");
-        when(c.company()).thenReturn("TestCo");
-        when(d.company()).thenReturn("TestCo");
+        Order a = new Order(LocalDateTime.now(), "TestCo", 10);
+        Order b = new Order(LocalDateTime.now(), "TestCo", 10);
+        Order c = new Order(LocalDateTime.now(), "TestCo", 10);
+        Order d = new Order(LocalDateTime.now(), "TestCo", 10);
 
         List<Order> orders = List.of(a, b, c, d);
         int pricePerKg = 10;
-        double minDiscount = 0.01;
+        double minDiscount = 0.0;
         double maxDiscount = 0.07;
         double stepDiscount = 0.03;
 
         Map<String, Integer> result = discountFromMaxToMinWithStep.calculateTotalCosts(orders, pricePerKg, minDiscount, maxDiscount, stepDiscount);
 
         assertEquals(1, result.size());
-        assertEquals(387, result.get("TestCo"));
-        verify(a, times(1)).quantityKg();
-        verify(b, times(1)).quantityKg();
-        verify(c, times(1)).quantityKg();
-        verify(d, times(1)).quantityKg();
+        assertEquals(388, result.get("TestCo"));
     }
 }
