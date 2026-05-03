@@ -9,7 +9,7 @@ import java.util.Map;
 public class DiscountFromMaxToMinWithStep implements DiscountStrategy {
 
     @Override
-    public Map<String, Integer> calculateTotalCosts(List<Order> orders, int pricePerKG, int minDiscount, double maxDiscount, double stepDiscount) {
+    public Map<String, Integer> calculateTotalCosts(List<Order> orders, int pricePerKG, double minDiscount, double maxDiscount, double stepDiscount) {
         List<Order> sortedOrders = orders.stream()
                 .sorted((o1, o2) -> o1.orderDate().compareTo(o2.orderDate()))
                 .toList();
@@ -25,12 +25,15 @@ public class DiscountFromMaxToMinWithStep implements DiscountStrategy {
         return result;
     }
 
-    private int calculatorDiscount(int amount, int i, int minDiscount, double maxDiscount, double stepDiscount) {
+    private int calculatorDiscount(int amount, int i, double minDiscount, double maxDiscount, double stepDiscount) {
+        int maxPercent = (int) Math.round(maxDiscount * 100);
+        int stepPercent = (int) Math.round(stepDiscount * 100);
+        int minPercent = (int) Math.round(minDiscount * 100);
 
-        if (i * stepDiscount <= (maxDiscount - stepDiscount)) {
-            return (int) (amount * (maxDiscount - i * stepDiscount));
+        if (maxPercent - i * stepPercent > minPercent) {
+            return (amount * (maxPercent - i * stepPercent)) / 100;
         } else {
-            return minDiscount;
+            return (amount * minPercent) / 100;
         }
     }
 }
