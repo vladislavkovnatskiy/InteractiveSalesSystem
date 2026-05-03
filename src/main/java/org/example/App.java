@@ -1,7 +1,9 @@
 package org.example;
 
-public class App {
-    public static void main(String[] args) {
+import java.io.IOException;
 
+public class App {
+    public static void main(String[] args) throws IOException {
+        AppRunner.run(args);
     }
 }
